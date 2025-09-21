@@ -47,13 +47,41 @@
             .pulse-slow {
                 animation: pulse 3s infinite;
             }
+            .typewriter {
+                animation: typewriter 2s steps(20) forwards, blinkCursor 0.75s step-end infinite;
+                overflow: hidden;
+                white-space: nowrap;
+                border-right: 3px solid #165DFF;
+                width: 0;
+            }
+            .line-grow {
+                animation: lineGrow 0.8s ease forwards;
+                transform-origin: left;
+                transform: scaleX(0);
+            }
+            .text-reveal {
+                animation: textReveal 0.8s ease forwards;
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            .icon-breathe {
+                animation: iconBreathe 3s ease-in-out infinite;
+            }
+            .card-load {
+                animation: cardLoad 0.5s ease forwards;
+                opacity: 0;
+                transform: scale(0.95) rotate(-2deg);
+            }
+            .copy-feedback {
+                animation: copyFeedback 0.5s ease forwards;
+            }
         }
 
+        /* 基础动画 */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        
         @keyframes slideUp {
             from { 
                 transform: translateY(20px);
@@ -64,7 +92,6 @@
                 opacity: 1;
             }
         }
-        
         @keyframes pulse {
             0%, 100% {
                 box-shadow: 0 0 0 0 rgba(22, 93, 255, 0.4);
@@ -73,14 +100,48 @@
                 box-shadow: 0 0 0 10px rgba(22, 93, 255, 0);
             }
         }
+
+        /* 新增动画 */
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blinkCursor {
+            from, to { border-color: transparent; }
+            50% { border-color: #165DFF; }
+        }
+        @keyframes lineGrow {
+            to { transform: scaleX(1); }
+        }
+        @keyframes textReveal {
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes iconBreathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        @keyframes cardLoad {
+            to { 
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+        @keyframes copyFeedback {
+            0% { box-shadow: 0 0 0 0 rgba(22, 93, 255, 0.5); }
+            100% { box-shadow: 0 0 0 15px rgba(22, 93, 255, 0); }
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex flex-col">
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex flex-col overflow-x-hidden">
     <!-- 顶部导航栏 -->
     <header class="bg-white/90 backdrop-blur-sm shadow-sm sticky top-0 z-50 transition-all duration-500">
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Logo 动画 -->
             <div class="flex items-center space-x-2 group">
-                <i class="fa fa-compass text-primary text-2xl transition-transform duration-500 group-hover:rotate-12"></i>
+                <i class="fa fa-compass text-primary text-2xl transition-transform duration-500 group-hover:rotate-12 icon-breathe"></i>
                 <h1 class="text-xl md:text-2xl font-bold text-dark">
                     <span class="text-primary relative inline-block">
                         linyv
@@ -89,35 +150,37 @@
                 </h1>
             </div>
             
+            <!-- 导航链接动画 -->
             <nav class="hidden md:flex items-center space-x-1">
-                <a href="#" class="nav-link font-medium text-primary relative">
+                <a href="#" class="nav-link font-medium text-primary relative opacity-0" style="animation: fadeIn 0.5s ease 0.2s forwards;">
                     首页
                     <span class="absolute bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full"></span>
                 </a>
-                <a href="https://linyv-studio.github.io" target="_blank" class="nav-link group">
+                <a href="http://frp-hub.com:18759" target="_blank" class="nav-link group opacity-0" style="animation: fadeIn 0.5s ease 0.3s forwards;">
                     工作室官网
                     <span class="absolute bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full"></span>
                 </a>
-                <a href="#about" class="nav-link group">
+                <a href="#about" class="nav-link group opacity-0" style="animation: fadeIn 0.5s ease 0.4s forwards;">
                     关于我们
                     <span class="absolute bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full"></span>
                 </a>
-                <a href="#thanks" class="nav-link group">
+                <a href="#thanks" class="nav-link group opacity-0" style="animation: fadeIn 0.5s ease 0.5s forwards;">
                     鸣谢
                     <span class="absolute bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full"></span>
                 </a>
             </nav>
             
-            <button class="md:hidden text-gray-700 hover:text-primary transition-colors duration-300" id="menuToggle">
-                <i class="fa fa-bars text-xl"></i>
+            <!-- 菜单按钮旋转动画 -->
+            <button class="md:hidden text-gray-700 hover:text-primary transition-all duration-300" id="menuToggle">
+                <i class="fa fa-bars text-xl transition-transform duration-300 hover:rotate-90"></i>
             </button>
         </div>
         
-        <!-- 移动端菜单 -->
-        <div id="mobileMenu" class="md:hidden bg-white hidden transform transition-all duration-300 ease-in-out origin-top">
+        <!-- 移动端菜单滑入动画 -->
+        <div id="mobileMenu" class="md:hidden bg-white hidden transform transition-all duration-300 ease-in-out origin-top translate-y-[-10px] opacity-0">
             <div class="container mx-auto px-4 py-2 flex flex-col space-y-1">
                 <a href="#" class="nav-link font-medium text-primary">首页</a>
-                <a href="https://linyv-studio.github.io" target="_blank" class="nav-link">工作室官网</a>
+                <a href="http://frp-hub.com:18759" target="_blank" class="nav-link">工作室官网</a>
                 <a href="#about" class="nav-link">关于我们</a>
                 <a href="#thanks" class="nav-link">鸣谢</a>
             </div>
@@ -126,16 +189,19 @@
 
     <!-- 主内容区 -->
     <main class="flex-grow container mx-auto px-4 py-8">
-        <!-- 标题区域 -->
+        <!-- 标题区域（打字机动画） -->
         <section class="mb-10 text-center fade-in" style="animation-delay: 0.1s;">
-            <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4 relative inline-block">
+            <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4 relative inline-block typewriter">
                 凌宇工作室导航站
-                <span class="absolute -bottom-2 left-1/2 w-1/2 h-1 bg-primary rounded-full transform -translate-x-1/2"></span>
             </h2>
-            <p class="text-gray-600 mb-6 max-w-2xl mx-auto">便捷访问工作室资源与常用网站，高效导航，一键直达</p>
+            <p class="text-gray-600 mb-6 max-w-2xl mx-auto text-reveal" style="animation-delay: 2.2s;">
+                便捷访问工作室资源与常用网站，高效导航，一键直达
+            </p>
+            <!-- 装饰线动画 -->
+            <div class="w-32 h-1 bg-primary mx-auto mt-2 line-grow" style="animation-delay: 2.5s;"></div>
         </section>
 
-        <!-- 工作室链接区域 -->
+        <!-- 工作室链接区域（卡片加载动画） -->
         <section class="mb-12 slide-up" style="animation-delay: 0.2s;">
             <div class="flex items-center mb-4">
                 <i class="fa fa-building text-primary mr-2"></i>
@@ -144,18 +210,18 @@
             
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <!-- 工作室官网 -->
-                <a href="https://linyv-studio.github.io" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover">
+                <a href="http://frp-hub.com:18759" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover card-load" style="animation-delay: 0.3s;">
                     <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary transition-colors duration-300 hover:bg-primary hover:text-white">
                         <i class="fa fa-home"></i>
                     </div>
                     <div>
                         <h4 class="font-medium">工作室官网</h4>
-                        <p class="text-sm text-gray-500">linyv-studio.github.io</p>
+                        <p class="text-sm text-gray-500">frp-hub.com:18759</p>
                     </div>
                 </a>
                 
                 <!-- GitHub发布页 -->
-                <a href="https://www.github.com/linyv-studio" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover">
+                <a href="https://www.github.com/linyv-studio" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover card-load" style="animation-delay: 0.4s;">
                     <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-800 transition-colors duration-300 hover:bg-gray-800 hover:text-white">
                         <i class="fa fa-github"></i>
                     </div>
@@ -166,7 +232,7 @@
                 </a>
                 
                 <!-- Gitee发布页 -->
-                <a href="https://www.gitee.com/linyv-studio" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover">
+                <a href="https://www.gitee.com/linyv-studio" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover card-load" style="animation-delay: 0.5s;">
                     <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center text-red-600 transition-colors duration-300 hover:bg-red-600 hover:text-white">
                         <i class="fa fa-code-fork"></i>
                     </div>
@@ -177,7 +243,7 @@
                 </a>
                 
                 <!-- 工作室邮箱 -->
-                <a href="mailto:linyvstudio@163.com" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover">
+                <a href="mailto:linyvstudio@163.com" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover card-load" style="animation-delay: 0.6s;">
                     <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-600 transition-colors duration-300 hover:bg-green-600 hover:text-white">
                         <i class="fa fa-envelope"></i>
                     </div>
@@ -189,7 +255,7 @@
             </div>
         </section>
         
-        <!-- 创作者链接区域 -->
+        <!-- 创作者链接区域（复制反馈动画） -->
         <section class="mb-12 slide-up" style="animation-delay: 0.3s;">
             <div class="flex items-center mb-4">
                 <i class="fa fa-user text-accent mr-2"></i>
@@ -198,7 +264,7 @@
             
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <!-- 创作者GitHub -->
-                <a href="https://www.github.com/zjy-202191" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover">
+                <a href="https://www.github.com/zjy-202191" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover card-load" style="animation-delay: 0.7s;">
                     <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-800 transition-colors duration-300 hover:bg-gray-800 hover:text-white">
                         <i class="fa fa-github"></i>
                     </div>
@@ -209,7 +275,7 @@
                 </a>
                 
                 <!-- 创作者Gitee -->
-                <a href="https://www.gitee.com/zjy-202191" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover">
+                <a href="https://www.gitee.com/zjy-202191" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover card-load" style="animation-delay: 0.8s;">
                     <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center text-red-600 transition-colors duration-300 hover:bg-red-600 hover:text-white">
                         <i class="fa fa-code-fork"></i>
                     </div>
@@ -219,8 +285,19 @@
                     </div>
                 </a>
                 
+                <!-- 创作者抖音 -->
+                <a href="https://www.douyin.com/user/MS4wLjABAAAA0N35gM-KHLs0GdyCZTmMuFi0GgkXa2LQE4qxL87p6QHV184gZxLaMnqQIx4fNv8V?from_tab_name=main" target="_blank" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover card-load" style="animation-delay: 0.9s;">
+                    <div class="w-10 h-10 rounded-lg bg-black flex items-center justify-center text-white transition-colors duration-300 hover:bg-red-500 hover:text-white">
+                        <i class="fa fa-music"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-medium">创作者抖音</h4>
+                        <p class="text-sm text-gray-500">点击访问抖音主页</p>
+                    </div>
+                </a>
+                
                 <!-- 创作者邮箱 -->
-                <a href="mailto:zhangjinyv202191@163.com" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover">
+                <a href="mailto:zhangjinyv202191@163.com" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover card-load" style="animation-delay: 1s;">
                     <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-600 transition-colors duration-300 hover:bg-green-600 hover:text-white">
                         <i class="fa fa-envelope"></i>
                     </div>
@@ -230,8 +307,8 @@
                     </div>
                 </a>
                 
-                <!-- 创作者微信 -->
-                <div class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover" onclick="copyToClipboard('zjy_202191', '微信账号已复制')">
+                <!-- 创作者微信（复制反馈） -->
+                <div id="wechatCard" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover card-load" style="animation-delay: 1.1s;" onclick="copyToClipboard('zjy_202191', '微信账号已复制', 'wechatCard')">
                     <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-600 transition-colors duration-300 hover:bg-green-600 hover:text-white">
                         <i class="fa fa-weixin"></i>
                     </div>
@@ -241,8 +318,8 @@
                     </div>
                 </div>
                 
-                <!-- 创作者手机 -->
-                <div class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover" onclick="copyToClipboard('18137739765', '手机号已复制')">
+                <!-- 创作者手机（复制反馈） -->
+                <div id="phoneCard" class="bg-white rounded-xl shadow p-5 flex items-center space-x-3 card-hover card-load" style="animation-delay: 1.2s;" onclick="copyToClipboard('18137739765', '手机号已复制', 'phoneCard')">
                     <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white">
                         <i class="fa fa-phone"></i>
                     </div>
@@ -254,7 +331,7 @@
             </div>
         </section>
         
-        <!-- 常用网站导航 -->
+        <!-- 常用网站导航（分类标题动画） -->
         <section class="mb-12 slide-up" style="animation-delay: 0.4s;">
             <div class="flex items-center mb-4">
                 <i class="fa fa-link text-secondary mr-2"></i>
@@ -264,24 +341,24 @@
             <!-- 搜索引擎 -->
             <div class="mb-6">
                 <h4 class="text-gray-700 font-medium mb-3 flex items-center">
-                    <span class="w-1 h-5 bg-primary rounded-full mr-2"></span>
+                    <span class="w-1 h-5 bg-primary rounded-full mr-2 line-grow"></span>
                     搜索引擎
                 </h4>
                 <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
-                    <a href="https://www.baidu.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
-                        <i class="fa fa-search text-xl text-blue-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                    <a href="https://www.baidu.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 1.3s;">
+                        <i class="fa fa-search text-xl text-blue-500 mb-1 transition-transform duration-300 hover:scale-125 icon-breathe" style="animation-delay: 1.6s;"></i>
                         <p class="text-sm">百度</p>
                     </a>
-                    <a href="https://www.google.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
-                        <i class="fa fa-google text-xl text-red-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                    <a href="https://www.google.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 1.4s;">
+                        <i class="fa fa-google text-xl text-red-500 mb-1 transition-transform duration-300 hover:scale-125 icon-breathe" style="animation-delay: 1.7s;"></i>
                         <p class="text-sm">谷歌</p>
                     </a>
-                    <a href="https://cn.bing.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
-                        <i class="fa fa-globe text-xl text-green-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                    <a href="https://cn.bing.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 1.5s;">
+                        <i class="fa fa-globe text-xl text-green-500 mb-1 transition-transform duration-300 hover:scale-125 icon-breathe" style="animation-delay: 1.8s;"></i>
                         <p class="text-sm">必应</p>
                     </a>
-                    <a href="https://sogou.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
-                        <i class="fa fa-paw text-xl text-orange-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                    <a href="https://sogou.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 1.6s;">
+                        <i class="fa fa-paw text-xl text-orange-500 mb-1 transition-transform duration-300 hover:scale-125 icon-breathe" style="animation-delay: 1.9s;"></i>
                         <p class="text-sm">搜狗</p>
                     </a>
                 </div>
@@ -290,23 +367,23 @@
             <!-- 社交平台 -->
             <div class="mb-6">
                 <h4 class="text-gray-700 font-medium mb-3 flex items-center">
-                    <span class="w-1 h-5 bg-primary rounded-full mr-2"></span>
+                    <span class="w-1 h-5 bg-primary rounded-full mr-2 line-grow" style="animation-delay: 2.1s;"></span>
                     社交平台
                 </h4>
                 <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
-                    <a href="https://weibo.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
+                    <a href="https://weibo.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 2.2s;">
                         <i class="fa fa-weibo text-xl text-red-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
                         <p class="text-sm">微博</p>
                     </a>
-                    <a href="https://qq.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
+                    <a href="https://qq.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 2.3s;">
                         <i class="fa fa-qq text-xl text-blue-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
                         <p class="text-sm">QQ</p>
                     </a>
-                    <a href="https://zhihu.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
+                    <a href="https://zhihu.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 2.4s;">
                         <i class="fa fa-book text-xl text-blue-400 mb-1 transition-transform duration-300 hover:scale-125"></i>
                         <p class="text-sm">知乎</p>
                     </a>
-                    <a href="https://bilibili.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
+                    <a href="https://bilibili.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 2.5s;">
                         <i class="fa fa-play-circle text-xl text-pink-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
                         <p class="text-sm">B站</p>
                     </a>
@@ -316,50 +393,102 @@
             <!-- 开发资源 -->
             <div class="mb-6">
                 <h4 class="text-gray-700 font-medium mb-3 flex items-center">
-                    <span class="w-1 h-5 bg-primary rounded-full mr-2"></span>
+                    <span class="w-1 h-5 bg-primary rounded-full mr-2 line-grow" style="animation-delay: 2.9s;"></span>
                     开发资源
                 </h4>
                 <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
-                    <a href="https://github.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
+                    <a href="https://github.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 3s;">
                         <i class="fa fa-github text-xl text-gray-800 mb-1 transition-transform duration-300 hover:scale-125"></i>
                         <p class="text-sm">GitHub</p>
                     </a>
-                    <a href="https://gitee.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
+                    <a href="https://gitee.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 3.1s;">
                         <i class="fa fa-code-fork text-xl text-red-600 mb-1 transition-transform duration-300 hover:scale-125"></i>
                         <p class="text-sm">Gitee</p>
                     </a>
-                    <a href="https://stackoverflow.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
+                    <a href="https://stackoverflow.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 3.2s;">
                         <i class="fa fa-stack-overflow text-xl text-orange-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
                         <p class="text-sm">StackOverflow</p>
                     </a>
-                    <a href="https://npmjs.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover">
+                    <a href="https://npmjs.com" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 3.3s;">
                         <i class="fa fa-cubes text-xl text-red-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
                         <p class="text-sm">NPM</p>
                     </a>
                 </div>
             </div>
+            
+            <!-- 下载资源 -->
+            <div class="mb-6">
+                <h4 class="text-gray-700 font-medium mb-3 flex items-center">
+                    <span class="w-1 h-5 bg-primary rounded-full mr-2 line-grow" style="animation-delay: 3.7s;"></span>
+                    下载资源
+                </h4>
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                    <a href="https://mirrors.tuna.tsinghua.edu.cn/" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 3.8s;">
+                        <i class="fa fa-download text-xl text-green-600 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                        <p class="text-sm">清华源</p>
+                    </a>
+                    <a href="https://www.xitongzhijia.net/" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 3.9s;">
+                        <i class="fa fa-desktop text-xl text-blue-600 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                        <p class="text-sm">系统之家</p>
+                    </a>
+                    <a href="https://pc.qq.com/" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 4s;">
+                        <i class="fa fa-qq text-xl text-blue-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                        <p class="text-sm">腾讯软件中心</p>
+                    </a>
+                    <a href="https://www.cr173.com/" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 4.1s;">
+                        <i class="fa fa-cloud-download text-xl text-purple-600 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                        <p class="text-sm">太平洋下载</p>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 游戏 -->
+            <div class="mb-6">
+                <h4 class="text-gray-700 font-medium mb-3 flex items-center">
+                    <span class="w-1 h-5 bg-primary rounded-full mr-2 line-grow" style="animation-delay: 4.5s;"></span>
+                    游戏
+                </h4>
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                    <a href="https://store.steampowered.com/" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 4.6s;">
+                        <i class="fa fa-gamepad text-xl text-gray-800 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                        <p class="text-sm">Steam</p>
+                    </a>
+                    <a href="https://ys.mihoyo.com/cloud/#/" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 4.7s;">
+                        <i class="fa fa-cloud text-xl text-cyan-500 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                        <p class="text-sm">云原神</p>
+                    </a>
+                    <a href="https://www.epicgames.com/site/zh-CN/home" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 4.8s;">
+                        <i class="fa fa-rocket text-xl text-blue-700 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                        <p class="text-sm">Epic Games</p>
+                    </a>
+                    <a href="https://www.blizzard.com/zh-cn/" target="_blank" class="bg-white rounded-lg shadow p-3 text-center card-hover card-load" style="animation-delay: 4.9s;">
+                        <i class="fa fa-snowflake-o text-xl text-blue-400 mb-1 transition-transform duration-300 hover:scale-125"></i>
+                        <p class="text-sm">暴雪娱乐</p>
+                    </a>
+                </div>
+            </div>
         </section>
         
-        <!-- 关于我们 -->
+        <!-- 关于我们（文本逐行动画） -->
         <section id="about" class="mb-12 bg-white rounded-xl shadow p-6 slide-up" style="animation-delay: 0.5s;">
             <div class="flex items-center mb-4">
                 <i class="fa fa-info-circle text-primary mr-2"></i>
                 <h3 class="text-xl font-bold text-dark">关于我们</h3>
             </div>
             
-            <p class="text-gray-700 mb-4 relative pl-4 before:absolute before:left-0 before:top-1 before:bottom-1 before:w-0.5 before:bg-primary/30">
+            <p class="text-gray-700 mb-4 relative pl-4 before:absolute before:left-0 before:top-1 before:bottom-1 before:w-0.5 before:bg-primary/30 text-reveal" style="animation-delay: 5.3s;">
                 凌宇工作室（linyv-studio）致力于开发高质量的软件产品和技术解决方案，
                 专注于为用户提供优质的数字体验。我们不断探索新技术，追求卓越，
                 努力创造有价值的产品。
             </p>
             
-            <p class="text-gray-700 relative pl-4 before:absolute before:left-0 before:top-1 before:bottom-1 before:w-0.5 before:bg-primary/30">
+            <p class="text-gray-700 relative pl-4 before:absolute before:left-0 before:top-1 before:bottom-1 before:w-0.5 before:bg-primary/30 text-reveal" style="animation-delay: 5.6s;">
                 本导航站汇集了工作室的重要链接和常用网络资源，方便用户快速访问。
                 感谢您对凌宇工作室的关注与支持！
             </p>
         </section>
         
-        <!-- 鸣谢 -->
+        <!-- 鸣谢（人物卡片呼吸动画） -->
         <section id="thanks" class="mb-12 slide-up" style="animation-delay: 0.6s;">
             <div class="flex items-center mb-4">
                 <i class="fa fa-heart text-red-500 mr-2"></i>
@@ -367,21 +496,21 @@
             </div>
             
             <div class="bg-white rounded-xl shadow p-6">
-                <p class="text-gray-700 mb-4">感谢以下人员对工作室的贡献与支持：</p>
+                <p class="text-gray-700 mb-4 text-reveal" style="animation-delay: 5.9s;">感谢以下人员对工作室的贡献与支持：</p>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="text-center p-4 bg-gray-50 rounded-lg card-hover">
+                    <div class="text-center p-4 bg-gray-50 rounded-lg card-hover icon-breathe" style="animation-delay: 6.1s;">
                         <i class="fa fa-user-circle text-3xl text-primary mb-2 transition-colors duration-300 hover:text-accent"></i>
                         <p class="font-medium">张金宇</p>
                     </div>
-                    <div class="text-center p-4 bg-gray-50 rounded-lg card-hover">
+                    <div class="text-center p-4 bg-gray-50 rounded-lg card-hover icon-breathe" style="animation-delay: 6.3s;">
                         <i class="fa fa-user-circle text-3xl text-primary mb-2 transition-colors duration-300 hover:text-accent"></i>
                         <p class="font-medium">岁穗姩</p>
                     </div>
-                    <div class="text-center p-4 bg-gray-50 rounded-lg card-hover">
+                    <div class="text-center p-4 bg-gray-50 rounded-lg card-hover icon-breathe" style="animation-delay: 6.5s;">
                         <i class="fa fa-user-circle text-3xl text-primary mb-2 transition-colors duration-300 hover:text-accent"></i>
                         <p class="font-medium">马万里</p>
                     </div>
-                    <div class="text-center p-4 bg-gray-50 rounded-lg card-hover">
+                    <div class="text-center p-4 bg-gray-50 rounded-lg card-hover icon-breathe" style="animation-delay: 6.7s;">
                         <i class="fa fa-user-circle text-3xl text-primary mb-2 transition-colors duration-300 hover:text-accent"></i>
                         <p class="font-medium">周晨阳</p>
                     </div>
@@ -390,13 +519,18 @@
         </section>
     </main>
 
+    <!-- 回到顶部按钮（淡入动画） -->
+    <button id="backToTop" class="fixed bottom-5 left-5 bg-primary text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center opacity-0 transition-all duration-300 hover:bg-primary/90 hover:scale-110 z-40">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
     <!-- 页脚 -->
     <footer class="bg-dark text-white py-8">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
                     <div class="flex items-center space-x-2">
-                        <i class="fa fa-compass text-primary text-xl"></i>
+                        <i class="fa fa-compass text-primary text-xl icon-breathe"></i>
                         <h2 class="text-xl font-bold">
                             <span class="text-primary">linyv</span>-studio
                         </h2>
@@ -405,13 +539,13 @@
                 </div>
                 
                 <div class="flex space-x-6">
-                    <a href="https://www.github.com/linyv-studio" target="_blank" class="text-gray-400 hover:text-primary transition-colors duration-300 hover:scale-110 inline-block">
+                    <a href="https://www.github.com/linyv-studio" target="_blank" class="text-gray-400 hover:text-primary transition-colors duration-300 hover:scale-110 inline-block icon-breathe">
                         <i class="fa fa-github text-xl"></i>
                     </a>
-                    <a href="https://www.gitee.com/linyv-studio" target="_blank" class="text-gray-400 hover:text-primary transition-colors duration-300 hover:scale-110 inline-block">
+                    <a href="https://www.gitee.com/linyv-studio" target="_blank" class="text-gray-400 hover:text-primary transition-colors duration-300 hover:scale-110 inline-block icon-breathe" style="animation-delay: 0.5s;">
                         <i class="fa fa-code-fork text-xl"></i>
                     </a>
-                    <a href="mailto:linyvstudio@163.com" class="text-gray-400 hover:text-primary transition-colors duration-300 hover:scale-110 inline-block">
+                    <a href="mailto:linyvstudio@163.com" class="text-gray-400 hover:text-primary transition-colors duration-300 hover:scale-110 inline-block icon-breathe" style="animation-delay: 1s;">
                         <i class="fa fa-envelope text-xl"></i>
                     </a>
                 </div>
@@ -426,16 +560,36 @@
     </div>
 
     <script>
-        // 移动端菜单切换
+        // 移动端菜单切换（优化动画）
         document.getElementById('menuToggle').addEventListener('click', function() {
             const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                setTimeout(() => {
+                    mobileMenu.classList.remove('translate-y-[-10px]', 'opacity-0');
+                    mobileMenu.classList.add('translate-y-0', 'opacity-100');
+                }, 10);
+            } else {
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+                mobileMenu.classList.add('translate-y-[-10px]', 'opacity-0');
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300);
+            }
         });
         
-        // 复制到剪贴板功能
-        function copyToClipboard(text, message) {
+        // 复制到剪贴板功能（新增复制反馈动画）
+        function copyToClipboard(text, message, cardId) {
             navigator.clipboard.writeText(text).then(() => {
                 showToast(message);
+                // 给点击的卡片添加反馈动画
+                const card = document.getElementById(cardId);
+                if (card) {
+                    card.classList.add('copy-feedback');
+                    setTimeout(() => {
+                        card.classList.remove('copy-feedback');
+                    }, 500);
+                }
             }).catch(err => {
                 showToast('复制失败，请手动复制');
                 console.error('复制失败:', err);
@@ -457,9 +611,11 @@
             }, 2000);
         }
         
-        // 滚动时改变导航栏样式
+        // 滚动时改变导航栏样式 + 回到顶部按钮显示
+        const backToTopBtn = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
+            // 导航栏样式变化
             if (window.scrollY > 10) {
                 header.classList.add('py-2', 'shadow');
                 header.classList.remove('py-3', 'shadow-sm');
@@ -467,6 +623,23 @@
                 header.classList.add('py-3', 'shadow-sm');
                 header.classList.remove('py-2', 'shadow');
             }
+            
+            // 回到顶部按钮显示/隐藏
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0');
+                backToTopBtn.classList.add('opacity-100');
+            } else {
+                backToTopBtn.classList.remove('opacity-100');
+                backToTopBtn.classList.add('opacity-0');
+            }
+        });
+        
+        // 回到顶部功能
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
         
         // 平滑滚动
@@ -475,7 +648,14 @@
                 e.preventDefault();
                 
                 // 关闭移动菜单（如果打开）
-                document.getElementById('mobileMenu').classList.add('hidden');
+                const mobileMenu = document.getElementById('mobileMenu');
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+                    mobileMenu.classList.add('translate-y-[-10px]', 'opacity-0');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                }
                 
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
